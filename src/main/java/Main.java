@@ -40,8 +40,31 @@ public class Main {
             return response.body().string();
         }
     }
-    public String sendPatchRequest(String url, String json) throws IOException {
+    public String sendPatchRequest(String url,String uid, String json) throws IOException {
         RequestBody body = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
+        Request request = new Request.Builder()
+                .url(url+"/"+uid)
+                .header("Authorization", "Bearer "+APIKey)
+                .patch(body)
+                .build();
 
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            assert response.body() != null;
+            return response.body().string();
+        }
+    }
+    public String sendDeleteRequest(String url,String uid) throws IOException {
+        Request request = new Request.Builder()
+                .url(url+"/"+uid)
+                .header("Authorization", "Bearer "+APIKey)
+                .delete()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            assert response.body() != null;
+            return response.body().string();
+        }
     }
 }

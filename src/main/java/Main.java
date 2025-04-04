@@ -21,7 +21,6 @@ public class Main {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-            // Return the response body as a string
             assert response.body() != null;
             return response.body().string();
         }
@@ -63,6 +62,19 @@ public class Main {
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            assert response.body() != null;
+            return response.body().string();
+        }
+    }
+    public String getSingleUserRequest(String url,String uid) throws IOException {
+        Request request = new Request.Builder()
+                .url(url+"/"+uid)
+                .header("Authorization", "Bearer "+APIKey)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
             assert response.body() != null;
             return response.body().string();
         }
